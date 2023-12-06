@@ -1,5 +1,6 @@
-import bdd.MissionBDD;
-import bdd.PersonneBDD;
+import bdd.DBConnection;
+import bdd.MissionTrueBDD;
+import bdd.PersonneTrueBDD;
 import service.PersonneService;
 import service.MissionService;
 
@@ -11,8 +12,10 @@ public class Main {
     public static short port2 = 8090;
 
     public void startService(){
-        PersonneBDD.initBdd();
-        MissionBDD.initBdd();
+        DBConnection connection = new DBConnection();
+        connection.connect("jdbc:mysql://srv-bdens.insa-toulouse.fr:3306/projet_gei_055", "projet_gei_055", "Mahg7mac");
+        PersonneTrueBDD.setConn(connection.getConn());
+        MissionTrueBDD.setConn(connection.getConn());
         String url1 = "http://"+host+":"+port1+"/";
         Endpoint.publish(url1, new PersonneService());
         String url2 = "http://"+host+":"+port2+"/";
