@@ -12,12 +12,8 @@ public class PersonneRestService {
 
     @POST
     @Path("/ajoutDemandeur")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public boolean ajoutDemandeur(@FormParam("demandeurNom") String demandeurNom,
-                                  @FormParam("demandeurPrenom") String demandeurPrenom,
-                                  @FormParam("demandeurAge") int demandeurAge,
-                                  @FormParam("demandeurAdresse") String demandeurAdresse) {
-        Personne personne = new Personne(demandeurNom, demandeurPrenom, demandeurAge, demandeurAdresse);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean ajoutDemandeur(Personne personne) {
         personne.setBenevole(false);
         PersonneTrueBDD.ajouterPersonne(personne);
         return true;
@@ -25,12 +21,8 @@ public class PersonneRestService {
 
     @POST
     @Path("/ajoutBenevole")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public boolean ajoutBenevole(@FormParam("benevoleNom") String benevoleNom,
-                                 @FormParam("benevolePrenom") String benevolePrenom,
-                                 @FormParam("benevoleAge") int benevoleAge,
-                                 @FormParam("benevoleAdresse") String benevoleAdresse) {
-        Personne personne = new Personne(benevoleNom, benevolePrenom, benevoleAge, benevoleAdresse);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean ajoutBenevole(Personne personne) {
         personne.setBenevole(true);
         PersonneTrueBDD.ajouterPersonne(personne);
         return true;

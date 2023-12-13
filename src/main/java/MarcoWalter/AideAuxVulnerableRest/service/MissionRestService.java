@@ -12,10 +12,8 @@ public class MissionRestService {
 	
     @POST
     @Path("/ajoutMission")
-    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public boolean ajoutMission(@FormParam("demandeurId") int demandeurId,
-                                @FormParam("missionSujet") String missionSujet) {
-        Mission mission = new Mission(demandeurId, missionSujet);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public boolean ajoutMission(Mission mission) {
         MissionTrueBDD.ajouterMission(mission);
         return true;
     }
