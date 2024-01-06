@@ -1,0 +1,13 @@
+package MarcoWalter.AideAuxVulnerableRelation;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class AideAuxVulnerableRelationApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
