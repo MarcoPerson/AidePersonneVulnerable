@@ -8,6 +8,7 @@ import MarcoWalter.AideAuxVulnerableRelation.model.Personne;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -18,16 +19,18 @@ import org.springframework.web.client.RestTemplate;
 
 @RestController
 public class RelationSpringService {
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
     @GetMapping("/infosPersonne/{personneId}")
     public InfosPersonne infosPersonne(@PathVariable int personneId) {
-        RestTemplate restTemplate = new RestTemplate();
-        Personne personne = restTemplate.getForObject("http://localhost:3000/getPersonne/" + personneId,
+        Personne personne = restTemplate.getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + personneId,
                 Personne.class);
 
         if (personne.getRole().getValue() == "Demandeur") {
             ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                    "http://localhost:3001/getMissionsDemandeur/" + personne.getId(),
+                    "http://aideAuxVulnerableMission/getMissionsDemandeur/" + personne.getId(),
                     HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                     });
             Collection<Mission> collection = missionsResponse.getBody();
@@ -35,7 +38,7 @@ public class RelationSpringService {
                     personne.getAdresse(), personne.getIsReferentNeeded(), collection);
         } else if (personne.getRole().getValue() == "Benevole") {
             ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                    "http://localhost:3001/getMissionsBenevole/" + personne.getId(),
+                    "http://aideAuxVulnerableMission/getMissionsBenevole/" + personne.getId(),
                     HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                     });
             Collection<Mission> collection = missionsResponse.getBody();
@@ -49,14 +52,13 @@ public class RelationSpringService {
 
     @GetMapping("/infosMission/{missionId}")
     public InfosMission infosMission(@PathVariable int missionId) {
-        RestTemplate restTemplate = new RestTemplate();
-        Mission mission = restTemplate.getForObject("http://localhost:3001/getMission/" + missionId,
+        Mission mission = restTemplate.getForObject("http://aideAuxVulnerableMission/getMission/" + missionId,
                 Mission.class);
 
         Personne demandeur = restTemplate
-                .getForObject("http://localhost:3000/getPersonne/" + mission.getDemandeurId(), Personne.class);
+                .getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + mission.getDemandeurId(), Personne.class);
         Personne benevole = restTemplate.getForObject(
-                "http://localhost:3000/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
+                "http://aideAuxVulnerablePersonne/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
 
         if (benevole == null) {
             return new InfosMission(mission.getId(), mission.getDemandeurId(),
@@ -81,19 +83,17 @@ public class RelationSpringService {
     public Collection<InfosMission> toutesLesMissionsSansBenevole() {
         Collection<InfosMission> collection = new ArrayList<InfosMission>();
 
-        RestTemplate restTemplate = new RestTemplate();
-
         ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                "http://localhost:3001/toutesLesMissionsSansBenevole",
+                "http://aideAuxVulnerableMission/toutesLesMissionsSansBenevole",
                 HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                 });
         Collection<Mission> missions = missionsResponse.getBody();
 
         for (Mission mission : missions) {
             Personne demandeur = restTemplate
-                    .getForObject("http://localhost:3000/getPersonne/" + mission.getDemandeurId(), Personne.class);
+                    .getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + mission.getDemandeurId(), Personne.class);
             Personne benevole = restTemplate.getForObject(
-                    "http://localhost:3000/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
+                    "http://aideAuxVulnerablePersonne/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
             if (benevole == null) {
                 collection.add(new InfosMission(mission.getId(), mission.getDemandeurId(),
                         mission.getBenevoleAssigneId(),
@@ -120,19 +120,17 @@ public class RelationSpringService {
     public Collection<InfosMission> toutesLesMissionsNonValidees() {
         Collection<InfosMission> collection = new ArrayList<InfosMission>();
 
-        RestTemplate restTemplate = new RestTemplate();
-
         ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                "http://localhost:3001/toutesLesMissionsNonValidees",
+                "http://aideAuxVulnerableMission/toutesLesMissionsNonValidees",
                 HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                 });
         Collection<Mission> missions = missionsResponse.getBody();
 
         for (Mission mission : missions) {
             Personne demandeur = restTemplate
-                    .getForObject("http://localhost:3000/getPersonne/" + mission.getDemandeurId(), Personne.class);
+                    .getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + mission.getDemandeurId(), Personne.class);
             Personne benevole = restTemplate.getForObject(
-                    "http://localhost:3000/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
+                    "http://aideAuxVulnerablePersonne/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
             if (benevole == null) {
                 collection.add(new InfosMission(mission.getId(), mission.getDemandeurId(),
                         mission.getBenevoleAssigneId(),
@@ -159,19 +157,17 @@ public class RelationSpringService {
     public Collection<InfosMission> toutesLesMissionsNonReferrees() {
         Collection<InfosMission> collection = new ArrayList<InfosMission>();
 
-        RestTemplate restTemplate = new RestTemplate();
-
         ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                "http://localhost:3001/toutesLesMissionsNonReferrees",
+                "http://aideAuxVulnerableMission/toutesLesMissionsNonReferrees",
                 HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                 });
         Collection<Mission> missions = missionsResponse.getBody();
 
         for (Mission mission : missions) {
             Personne demandeur = restTemplate
-                    .getForObject("http://localhost:3000/getPersonne/" + mission.getDemandeurId(), Personne.class);
+                    .getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + mission.getDemandeurId(), Personne.class);
             Personne benevole = restTemplate.getForObject(
-                    "http://localhost:3000/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
+                    "http://aideAuxVulnerablePersonne/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
             if (benevole == null) {
                 collection.add(new InfosMission(mission.getId(), mission.getDemandeurId(),
                         mission.getBenevoleAssigneId(),
@@ -197,19 +193,17 @@ public class RelationSpringService {
     public Collection<InfosMission> toutesLesMissions() {
         Collection<InfosMission> collection = new ArrayList<InfosMission>();
 
-        RestTemplate restTemplate = new RestTemplate();
-
         ResponseEntity<Collection<Mission>> missionsResponse = restTemplate.exchange(
-                "http://localhost:3001/toutesLesMissions",
+                "http://aideAuxVulnerableMission/toutesLesMissions",
                 HttpMethod.GET, null, new ParameterizedTypeReference<Collection<Mission>>() {
                 });
         Collection<Mission> missions = missionsResponse.getBody();
 
         for (Mission mission : missions) {
             Personne demandeur = restTemplate
-                    .getForObject("http://localhost:3000/getPersonne/" + mission.getDemandeurId(), Personne.class);
+                    .getForObject("http://aideAuxVulnerablePersonne/getPersonne/" + mission.getDemandeurId(), Personne.class);
             Personne benevole = restTemplate.getForObject(
-                    "http://localhost:3000/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
+                    "http://aideAuxVulnerablePersonne/getPersonne/" + mission.getBenevoleAssigneId(), Personne.class);
             if (benevole == null) {
                 collection.add(new InfosMission(mission.getId(), mission.getDemandeurId(),
                         mission.getBenevoleAssigneId(),

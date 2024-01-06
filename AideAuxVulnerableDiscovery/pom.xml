@@ -9,26 +9,15 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>MarcoWalter</groupId>
-	<artifactId>AideAuxVulnerableMission</artifactId>
+	<artifactId>AideAuxVulnerableDiscovery</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>AideAuxVulnerableMission</name>
+	<name>AideAuxVulnerableDiscovery</name>
 	<description>Aide aux Personnes Vulnerables</description>
 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.4</spring-cloud.version>
 	</properties>
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
@@ -39,21 +28,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-		    <groupId>com.sun.jersey.contribs</groupId>
-		    <artifactId>jersey-apache-client4</artifactId>
-		    <version>1.19.4</version>
-		</dependency>
-
-		
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.33</version>
-		</dependency>
 	</dependencies>
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
