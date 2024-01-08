@@ -1,0 +1,59 @@
+body{
+  min-height: 100vh;
+  background-color: "#E5E8E8";
+  background-image: url("/back.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.home{
+  padding: 20px 40px;
+  margin: 5px 10px;
+}
+
+.result{
+  width: 95vw;
+}
+
+button{
+  padding: 6px 12px;
+  margin: 3px 6px;
+  cursor: pointer;
+}
+
+.renderHome{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.render{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.inrender{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+input{
+  padding: 5px 10px;
+  margin: 10px 20px;
+}
+
+select{
+  padding: 5px 10px;
+  margin: 10px 20px;
+}
+
+textarea{
+  padding: 5px 10px;
+  margin: 10px 20px;
+}
+
